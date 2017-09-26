@@ -11,11 +11,12 @@
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.13",
+    "react-stripe-checkout": "^2.6.3",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "^2.2.12",
-    "semantic-ui-react": "^0.73.0",
+    "semantic-ui-react": "^0.74.1",
     "validator": "^8.2.0"
   },
   "scripts": {
@@ -26,7 +27,7 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3"
+    "babel-eslint": "^8.0.0"
   },
   "proxy": "http://localhost:8080"
 }

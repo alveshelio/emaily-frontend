@@ -7,6 +7,7 @@ import SignupPage from './components/pages/SignupPage';
 import ForgotPasswordPage from './components/pages/ForgotPasswordPage';
 import ResetPasswordPage from './components/pages/ResetPasswordPage';
 import DashboardPage from './components/pages/DashboardPage';
+import AddCreditsPage from './components/pages/AddCreditsPage';
 import ConfirmationPage from './components/pages/ConfirmationPage';
 import UserRoute from './components/routes/UserRoute';
 import GuestRoute from './components/routes/GuestRoute';
@@ -23,7 +24,8 @@ const App = ({ location }) => (
     <GuestRoute location={location} path='/signup' component={SignupPage} />
     <GuestRoute location={location} path='/forgot_password' component={ForgotPasswordPage} />
     <GuestRoute location={location} path='/reset_password/:token' component={ResetPasswordPage} />
-    <UserRoute location={location} path='/dashboard' component={DashboardPage} />
+    <UserRoute location={location} exact path='/dashboard' component={DashboardPage} />
+    <UserRoute location={location} path='/dashboard/add_credits' component={AddCreditsPage} />
     <UserRoute location={location} path='/confirmation/:token' component={ConfirmationPage} />
   </div>
 );

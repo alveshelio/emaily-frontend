@@ -1,4 +1,4 @@
-import { EMAIL_CONFIRMATION_MESSAGE } from '../types';
+import { EMAIL_CONFIRMATION_MESSAGE } from '../constants/types';
 
 export default function user(state = {}, action = {}) {
   switch(action.type) {
