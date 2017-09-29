@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   Segment,
   Menu,
@@ -9,23 +10,30 @@ import {
 } from 'semantic-ui-react';
 
 import TopNavigation from '../navigation/TopNavigation';
+import { toggleMenuState} from '../../actions/navigation';
 
 class Layout extends Component{
 
   render() {
-    const { menuVisible } = this.props;
+    const { menuVisible, toggleMenuState } = this.props;
     return (
       <div>
         <TopNavigation />
         <Sidebar.Pushable as={Segment} attached="bottom" >
           <Sidebar as={Menu} animation="uncover" visible={menuVisible} icon="labeled" vertical inverted>
-            <Menu.Item><Icon name="home" />Home</Menu.Item>
-            <Menu.Item><Icon name="block layout" />Topics</Menu.Item>
+            <Menu.Item
+              as={Link} to='/dashboard'
+              onClick={() => toggleMenuState(!menuVisible)}
+            ><Icon name="home" />Dashboard</Menu.Item>
+            <Menu.Item
+              as={Link} to='/dashboard/surveys'
+              onClick={() => toggleMenuState(!menuVisible)}
+            ><Icon name="block layout" />Surveys</Menu.Item>
             <Menu.Item><Icon name="smile" />Friends</Menu.Item>
             <Menu.Item><Icon name="calendar" />History</Menu.Item>
           </Sidebar>
           <Sidebar.Pusher>
-            <Segment basic style={{height: '100vh'}}>
+            <Segment basic style={{minHeight: '100vh'}}>
               {this.props.children}
             </Segment>
           </Sidebar.Pusher>
@@ -46,4 +54,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Layout);
+export default connect(mapStateToProps, { toggleMenuState })(Layout);

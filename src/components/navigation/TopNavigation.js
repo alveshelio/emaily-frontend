@@ -40,7 +40,7 @@ class TopNavigation extends Component {
 TopNavigation.propTypes = {
   logout: PropTypes.func.isRequired,
   toggleMenuState: PropTypes.func.isRequired,
-  getCreditsValue: PropTypes.func.isRequired
+  getCreditsValue: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {

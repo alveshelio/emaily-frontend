@@ -18,6 +18,7 @@ export const emailConfirmationMessage = message => ({
 /* *********************************************************** */
 /* The tunk action is a function that returns another function */
 /* *********************************************************** */
+
 // login takes the credentials and returns a function
 // that returns the user and then dispatch a Redux action passing the user
 export const login = (credentials) => (dispatch) =>

@@ -1,0 +1,164 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import decode from 'jwt-decode';
+import _ from 'lodash';
+import { Table, Menu, Icon } from 'semantic-ui-react';
+
+import SurveyItem from './SurveyItem';
+import { getAllSurveys } from '../../actions/surveys';
+
+class AllSurveys extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pageNumber: 1,
+      nPerPage: 5,
+      totalPages: 0,
+      activeItem: 1,
+      column: null,
+      direction: null,
+      data: []
+    };
+  }
+  async componentDidMount() {
+    console.log('inside componentDidMount');
+    const userId = {...decode(this.props.user.token)}.id;
+    const { pageNumber, nPerPage } = this.state;
+    this.setState({ totalPages: Math.ceil(this.props.count / nPerPage) });
+    const data = await this.props.getAllSurveys(userId, nPerPage, pageNumber);
+    this.setState({ data });
+  }
+
+  // Every time we refetch the DB, we can not use componentDidMount
+  // to set data to the new surveys, instead we use componentWillReceiveProps
+  componentWillReceiveProps(nextProps) {
+    this.setState({ data: nextProps.surveys })
+  }
+
+  handleSort = clickedColumn => () => {
+    const { column, data, direction } = this.state;
+    if (column !== clickedColumn) {
+      this.setState({
+        column: clickedColumn,
+        data: _.sortBy(data, [clickedColumn]),
+        direction: 'ascending',
+      });
+      return
+    }
+
+    this.setState({
+      data: data.reverse(),
+      direction: direction === 'ascending' ? 'descending' : 'ascending',
+    });
+  };
+
+  sendSurvey(surveyId) {
+    console.log('surveyId', surveyId);
+  }
+
+  render() {
+    const userId = {...decode(this.props.user.token)}.id;
+    const { nPerPage, activeItem, column, direction, data } = this.state;
+    const { count } = this.props;
+    const handlePageNavigationPrev = () => {
+      if (this.state.pageNumber > 1) {
+        this.setState({ pageNumber: this.state.pageNumber - 1, activeItem: this.state.pageNumber - 1}, () =>
+          this.props.getAllSurveys(userId, this.state.nPerPage, this.state.pageNumber));
+      }
+    };
+
+    const handleSetPage = (page) => {
+      this.setState({ pageNumber: page, activeItem: page }, () =>
+        this.props.getAllSurveys(userId, this.state.nPerPage, this.state.pageNumber));
+    };
+
+    const handlePageNavigationNext = () => {
+      this.setState({ pageNumber: this.state.pageNumber + 1, activeItem: this.state.pageNumber + 1}, () =>
+        this.props.getAllSurveys(userId, this.state.nPerPage, this.state.pageNumber));
+    };
+
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(count / nPerPage); i++) {
+      pageNumbers.push(i);
+    }
+    return (
+      <Table celled striped selectable sortable>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell
+              style={{ width: '60%'}}
+              sorted={column === 'title' ? direction : null}
+              onClick={this.handleSort('title')}
+            >Title</Table.HeaderCell>
+            <Table.HeaderCell
+              style={{ width: '15%'}}
+              sorted={column === 'status' ? direction : null} onClick={this.handleSort('status')}
+            >Status</Table.HeaderCell>
+            <Table.HeaderCell style={{ width: '25%'}}>Action</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {data.map(survey =>
+            <SurveyItem
+              key={survey._id}
+              title={survey.title}
+              status='Not Sent'
+              sendSurvey={() => this.sendSurvey(survey._id)}
+            />)}
+        </Table.Body>
+        <Table.Footer>
+          <Table.Row>
+            <Table.HeaderCell colSpan='3'>
+              <Menu floated='right' pagination>
+                <Menu.Item
+                  as='a'
+                  icon
+                  onClick={() => handlePageNavigationPrev()}
+                >
+                  <Icon name='left chevron' />
+                </Menu.Item>
+                {pageNumbers.map(page => <Menu.Item
+                  as='a'
+                  active={activeItem === page}
+                  key={page}
+                  id={page}
+
+                  onClick={() => handleSetPage(page)}
+                >{page}</Menu.Item> )}
+                <Menu.Item
+                  as='a'
+                  icon
+                  onClick={() => handlePageNavigationNext()}
+                >
+                  <Icon name='right chevron' />
+                </Menu.Item>
+              </Menu>
+            </Table.HeaderCell>
+          </Table.Row>
+        </Table.Footer>
+      </Table>
+    )
+  }
+}
+
+AllSurveys.propTypes = {
+  getAllSurveys: PropTypes.func.isRequired,
+  surveys: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    subject: PropTypes.string.isRequired,
+    _user: PropTypes.string.isRequired
+  }).isRequired).isRequired,
+  count: PropTypes.number.isRequired
+};
+
+const mapStateToProps = state => {
+  return ({
+    surveys: state.surveys.surveys,
+    count: state.surveys.count,
+    user: state.user
+  });
+};
+
+export default connect(mapStateToProps, { getAllSurveys })(AllSurveys);
