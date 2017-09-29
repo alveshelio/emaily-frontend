@@ -31,10 +31,15 @@ export default {
     createSurvey: survey =>
       axios.post('/api/survey/new', { survey })
         .then(res => res.data.survey),
-    getSurveysBelongToUser: (userId, nPerPage, pageNumber) => {
-      return axios.get(`/api/users/${userId}/surveys?nPerPage=${nPerPage}&pageNumber=${pageNumber}`)
-        .then(res => res.data);
-    }
+
+    getSurveysBelongToUser: (userId, nPerPage, pageNumber) =>
+      axios.get(`/api/users/${userId}/surveys?nPerPage=${nPerPage}&pageNumber=${pageNumber}`)
+        .then(res => res.data),
+
+    sendSurvey: surveyId => axios.post(`/api/survey/send/${surveyId}`)
+        .then(res => {
+          return res.data
+        }),
   }
 };
 

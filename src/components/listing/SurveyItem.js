@@ -1,20 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button } from 'semantic-ui-react';
+import { Table, Button, Label } from 'semantic-ui-react';
 
-const SurveyItem = ({ title, status, sendSurvey }) => (
-  <Table.Row>
+const SurveyItem = ({ title, sent, sendSurvey }) => (
+  <Table.Row positive={sent}>
     <Table.Cell>{title}</Table.Cell>
-    <Table.Cell>{status}</Table.Cell>
+    <Table.Cell><Label ribbon={sent}>{sent ? 'Sent' : 'Not Sent'}</Label></Table.Cell>
     <Table.Cell textAlign='right'>
-      <Button onClick={sendSurvey}>Send Survey</Button>
+      <Button disabled={sent} onClick={sendSurvey}>{sent ? 'Survey Sent' : 'Send Survey'}</Button>
     </Table.Cell>
   </Table.Row>
 );
 
 SurveyItem.propTypes = {
   title: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
+  sent: PropTypes.bool.isRequired,
   sendSurvey: PropTypes.func.isRequired
 };
 

@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { Table, Menu, Icon } from 'semantic-ui-react';
 
 import SurveyItem from './SurveyItem';
-import { getAllSurveys } from '../../actions/surveys';
+import { getAllSurveys, sendSurvey } from '../../actions/surveys';
 
 class AllSurveys extends Component {
   constructor(props) {
@@ -22,7 +22,6 @@ class AllSurveys extends Component {
     };
   }
   async componentDidMount() {
-    console.log('inside componentDidMount');
     const userId = {...decode(this.props.user.token)}.id;
     const { pageNumber, nPerPage } = this.state;
     this.setState({ totalPages: Math.ceil(this.props.count / nPerPage) });
@@ -54,7 +53,8 @@ class AllSurveys extends Component {
   };
 
   sendSurvey(surveyId) {
-    console.log('surveyId', surveyId);
+    this.props.sendSurvey(surveyId)
+      .then(() => {});
   }
 
   render() {
@@ -103,7 +103,7 @@ class AllSurveys extends Component {
             <SurveyItem
               key={survey._id}
               title={survey.title}
-              status='Not Sent'
+              sent={!!survey.dateSent}
               sendSurvey={() => this.sendSurvey(survey._id)}
             />)}
         </Table.Body>
@@ -150,7 +150,8 @@ AllSurveys.propTypes = {
     subject: PropTypes.string.isRequired,
     _user: PropTypes.string.isRequired
   }).isRequired).isRequired,
-  count: PropTypes.number.isRequired
+  count: PropTypes.number.isRequired,
+  sendSurvey: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -161,4 +162,4 @@ const mapStateToProps = state => {
   });
 };
 
-export default connect(mapStateToProps, { getAllSurveys })(AllSurveys);
+export default connect(mapStateToProps, { getAllSurveys, sendSurvey })(AllSurveys);

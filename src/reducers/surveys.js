@@ -12,7 +12,12 @@ export default function surveys(state = initialState, action = {}) {
     case TOTAL_SURVEYS:
       return { ...state, count: action.total };
     case UPDATE_SURVEY_STATUS:
-
+      return {
+        ...state,
+        surveys: state.surveys.map(survey =>
+          survey._id === action.survey._id ?
+            {...survey, dateSent: action.survey.dateSent} : survey)
+    };
     case GET_ALL_SURVEYS_FROM_USER:
       return { ...state, surveys: [ ...action.surveys ] };
     default:
