@@ -37,9 +37,10 @@ export default {
         .then(res => res.data),
 
     sendSurvey: surveyId => axios.post(`/api/survey/send/${surveyId}`)
-        .then(res => {
-          return res.data
-        }),
+        .then(res => res.data),
+
+    fetchSurvey: surveyId => axios.get(`/api/survey/${surveyId}`)
+      .then(res => res.data.survey),
   }
 };
 

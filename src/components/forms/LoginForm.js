@@ -90,7 +90,7 @@ class LoginForm extends Component {
                 {errors.password && <InlineError text={errors.password} />}
               </Form.Field>
               <Button primary fluid size='large'>Login</Button>
-              <Link style={{ paddingTop: '8px', display: 'block' }} to='/signup'>Forgot password</Link>
+              <Link style={{ paddingTop: '8px', display: 'block' }} to='/forgot_password'>Forgot password</Link>
             </Segment>
           </Form>
           <Message>

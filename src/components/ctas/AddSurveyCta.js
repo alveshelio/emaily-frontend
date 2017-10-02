@@ -6,7 +6,7 @@ const AddSurveyCta = () => (
   <Card centered>
     <Card.Content textAlign='center'>
       <Card.Header>Add New Survey</Card.Header>
-      <Link to='/dashboard/surveys/new'><Icon name='plus circle' size='massive' /></Link>
+      <Link to='/dashboard/surveys/add'><Icon name='plus circle' size='massive' /></Link>
     </Card.Content>
   </Card>
 );

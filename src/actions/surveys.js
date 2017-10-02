@@ -1,4 +1,4 @@
-import { ADD_SURVEY, TOTAL_SURVEYS, UPDATE_SURVEY_STATUS } from '../constants/surveys';
+import { ADD_SURVEY, TOTAL_SURVEYS, UPDATE_SURVEY_STATUS, FETCH_SURVEY } from '../constants/surveys';
 import { GET_ALL_SURVEYS_FROM_USER } from '../constants/user';
 import { updateCredits } from './billing';
 
@@ -19,12 +19,15 @@ export const updateSurveyStatus = survey => ({
   survey
 });
 
-export const getSurveys = surveys => {
-  return ({
-    type: GET_ALL_SURVEYS_FROM_USER,
-    surveys
-  });
-};
+export const getSurveys = surveys => ({
+  type: GET_ALL_SURVEYS_FROM_USER,
+  surveys
+});
+
+export const getSurvey = survey => ({
+  type: FETCH_SURVEY,
+  survey
+});
 
 export const createSurvey = survey => dispatch =>
   api.surveys.createSurvey(survey).then(result => {
@@ -45,3 +48,9 @@ export const sendSurvey = surveyId => dispatch => api.surveys.sendSurvey(surveyI
     dispatch(updateSurveyStatus(result.survey));
     dispatch(updateCredits(result.credits));
   });
+
+export const fetchSurvey = surveyId => dispatch =>
+  api.surveys.fetchSurvey(surveyId)
+    .then(result => {
+      dispatch(getSurvey(result));
+    });

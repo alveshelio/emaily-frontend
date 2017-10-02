@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import decode from 'jwt-decode';
 import _ from 'lodash';
-import { Table, Menu, Icon } from 'semantic-ui-react';
+import { Table, Menu, Icon, Dimmer, Loader, Segment, Dropdown } from 'semantic-ui-react';
 
 import SurveyItem from './SurveyItem';
 import { getAllSurveys, sendSurvey } from '../../actions/surveys';
@@ -12,8 +12,32 @@ class AllSurveys extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
+      success: false,
       pageNumber: 1,
       nPerPage: 5,
+      nPerPageOptions: [
+        {
+          key: 1,
+          text: '5',
+          value: 5,
+        },
+        {
+          key: 2,
+          text: '10',
+          value: 10,
+        },
+        {
+          key: 3,
+          text: '20',
+          value: 20,
+        },
+        {
+          key: 4,
+          text: 'All',
+          value: null,
+        }
+      ],
       totalPages: 0,
       activeItem: 1,
       column: null,
@@ -22,11 +46,14 @@ class AllSurveys extends Component {
     };
   }
   async componentDidMount() {
+
     const userId = {...decode(this.props.user.token)}.id;
     const { pageNumber, nPerPage } = this.state;
     this.setState({ totalPages: Math.ceil(this.props.count / nPerPage) });
     const data = await this.props.getAllSurveys(userId, nPerPage, pageNumber);
     this.setState({ data });
+    if (data) this.setState({ loading: false, success: true });
+
   }
 
   // Every time we refetch the DB, we can not use componentDidMount
@@ -82,7 +109,24 @@ class AllSurveys extends Component {
     for (let i = 1; i <= Math.ceil(count / nPerPage); i++) {
       pageNumbers.push(i);
     }
-    return (
+    const { loading, nPerPageOptions } = this.state;
+
+    return (<div>
+        { loading ?
+          <Segment>
+            <Dimmer active inverted style={{ height: '100vh'}}>
+              <Loader inverted>Loading</Loader>
+            </Dimmer>
+          </Segment> :
+      <div>
+        <span># of Surveys: <Menu compact>
+          <Dropdown
+            style={{ padding: '5px 10px 0 10px'}}
+            options={nPerPageOptions}
+            defaultValue={nPerPageOptions[0].value}
+            onChange={(value, data) => this.setState({ nPerPage: data.value })}
+          />
+        </Menu></span>
       <Table celled striped selectable sortable>
         <Table.Header>
           <Table.Row>
@@ -102,6 +146,8 @@ class AllSurveys extends Component {
           {data.map(survey =>
             <SurveyItem
               key={survey._id}
+              survey={survey}
+              id={survey._id}
               title={survey.title}
               sent={!!survey.dateSent}
               sendSurvey={() => this.sendSurvey(survey._id)}
@@ -138,6 +184,8 @@ class AllSurveys extends Component {
           </Table.Row>
         </Table.Footer>
       </Table>
+      </div> }
+      </div>
     )
   }
 }

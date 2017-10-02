@@ -1,4 +1,4 @@
-import { ADD_SURVEY, TOTAL_SURVEYS, UPDATE_SURVEY_STATUS } from '../constants/surveys';
+import { ADD_SURVEY, TOTAL_SURVEYS, UPDATE_SURVEY_STATUS, FETCH_SURVEY } from '../constants/surveys';
 import { GET_ALL_SURVEYS_FROM_USER } from '../constants/user';
 
 const initialState = {
@@ -11,6 +11,8 @@ export default function surveys(state = initialState, action = {}) {
       return { ...state, surveys: [ ...action.survey ] };
     case TOTAL_SURVEYS:
       return { ...state, count: action.total };
+    case FETCH_SURVEY:
+      return { ...state, ...action.survey };
     case UPDATE_SURVEY_STATUS:
       return {
         ...state,

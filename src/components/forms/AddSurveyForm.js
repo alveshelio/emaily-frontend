@@ -35,6 +35,7 @@ class AddSurveyForm extends Component {
             body: '',
             recipients: ''
           }, loading: false });
+          this.setState({ loading: false })
         })
         .catch(err => {
           console.log('error in onSubmit', err);

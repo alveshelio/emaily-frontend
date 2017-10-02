@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Breadcrumb, Divider } from 'semantic-ui-react';
 
-import Layout from './Layout';
 import AddSurveyForm from '../forms/AddSurveyForm';
 import { createSurvey } from '../../actions/surveys';
 
@@ -14,9 +15,15 @@ class AddSurveyPage extends Component {
 
   render() {
     return (
-      <Layout>
+      <div>
+        <Breadcrumb>
+          <Breadcrumb.Section><Link to='/dashboard'>Dashboard</Link></Breadcrumb.Section>
+          <Breadcrumb.Divider icon='right angle' />
+          <Breadcrumb.Section><Link to='/dashboard/surveys'>Surveys</Link></Breadcrumb.Section>
+        </Breadcrumb>
+        <Divider hidden />
         <AddSurveyForm submit={this.submit} />
-      </Layout>
+      </div>
     );
   }
 }

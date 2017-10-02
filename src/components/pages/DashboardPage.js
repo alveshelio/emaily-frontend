@@ -3,17 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Header } from 'semantic-ui-react';
 
-import Layout from './Layout';
 import ConfirmEmailMessage from '../messages/ConfirmEmailMessage';
 
 class DashboardPage extends Component{
   render() {
     const { isConfirmed } = this.props;
     return (
-      <Layout>
+      <div>
         {!isConfirmed && <ConfirmEmailMessage /> }
         <Header textAlign='center' as="h3">Emaily Dashboard</Header>
-      </Layout>
+      </div>
     );
   }
 }
