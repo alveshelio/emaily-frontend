@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Button, Message, Segment, Grid, Header } from 'semantic-ui-react';
+import isEmail from 'validator/lib/isEmail';
+import { Form, Button, Message, Segment, Grid, Header, Label, Divider } from 'semantic-ui-react';
 
 import InlineError from '../messages/InlineError';
 
@@ -12,6 +13,8 @@ class AddSurveyForm extends Component {
       body: '',
       recipients: '',
     },
+    invalidEmails: [],
+    invalidEmailsMessageVisible: true,
     loading: false,
     errors: {}
   };
@@ -44,6 +47,27 @@ class AddSurveyForm extends Component {
     }
   };
 
+  sanitizeEmails = (e) => {
+    const data = e.target.value;
+    const invalidEmails = [];
+    if (data) {
+      const validTrimmedEmails = data
+        .split(/[ ,]+/)
+        .map(email => email.trim())
+        .filter(trimmedEmail => {
+          if (!isEmail(trimmedEmail)) invalidEmails.push(trimmedEmail);
+          return isEmail(trimmedEmail)
+        });
+
+      this.setState({
+        ...this.state,
+        invalidEmails,
+        invalidEmailsMessageVisible: true,
+        data: { ...this.state.data, recipients: validTrimmedEmails.join(', ') }
+      });
+    }
+};
+
   validate = (data) => {
     const errors = {};
     if (!data.title) errors.title = 'Can\'t be blank';
@@ -55,7 +79,7 @@ class AddSurveyForm extends Component {
 
   render() {
     const { title, subject, body, recipients } = this.state.data;
-    const { errors, loading } = this.state;
+    const { errors, loading, invalidEmails, invalidEmailsMessageVisible } = this.state;
     return (
       <Grid
         textAlign='center'
@@ -117,9 +141,21 @@ class AddSurveyForm extends Component {
                   value={recipients}
                   placeholder='list of emails to send the survey'
                   onChange={this.onChange}
+                  onBlur={this.sanitizeEmails}
                 />
+                <Label>Email addresses will automatically be sanitized</Label>
+                { invalidEmails.length > 0 && invalidEmailsMessageVisible &&
+                <Message
+                  onDismiss={() => this.setState({ invalidEmailsMessageVisible: false })}
+                >
+                  <Message.Header>{invalidEmails.length < 2 ? 'Invalid Email' : 'Invalid Emails'} Removed</Message.Header>
+                  <Message.List>
+                    { invalidEmails.map((email, i) => <Message.Item key={i}>{email}</Message.Item>)}
+                  </Message.List>
+                </Message>}
                 {errors.recipients && <InlineError text={errors.recipients} />}
               </Form.Field>
+              <Divider />
               <Button primary fluid size='large'>Create Survey</Button>
             </Segment>
           </Form>

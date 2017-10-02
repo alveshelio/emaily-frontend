@@ -8,6 +8,8 @@ import { Table, Menu, Icon, Dimmer, Loader, Segment, Dropdown } from 'semantic-u
 import SurveyItem from './SurveyItem';
 import { getAllSurveys, sendSurvey } from '../../actions/surveys';
 
+// TODO Think about what's the best option, either fetch all surveys and chose number of surveys to display here os
+// make a new call to the API each time we change the number of surveys to display
 class AllSurveys extends Component {
   constructor(props) {
     super(props);
