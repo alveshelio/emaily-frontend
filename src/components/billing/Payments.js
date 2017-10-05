@@ -9,7 +9,7 @@ import { addCredits } from '../../actions/billing';
 const Payments = ({ amount, disabled, addCredits, JWTToken }) => {
   return (
     <StripeCheckout
-      amount={ amount * 100 }
+      amount={ amount }
       token={ token => addCredits(token, amount, JWTToken)}
       name='Emaily'
       description='Getting feedback from your users has never been easier.'

@@ -17,6 +17,6 @@ const SurveysRouteHandler = ({ location, match }) => {
       </Switch>
     </Layout>
   );
-}
+};
 
 export default SurveysRouteHandler;

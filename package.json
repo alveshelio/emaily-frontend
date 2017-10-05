@@ -6,6 +6,7 @@
     "axios": "^0.16.2",
     "immutable": "^3.8.1",
     "jwt-decode": "^2.2.0",
+    "moment": "^2.18.1",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -28,7 +29,11 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "babel-eslint": "^8.0.1"
+    "babel-eslint": "^8.0.1",
+    "eslint": "^4.8.0",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-prettier": "^2.6.0",
+    "eslint-plugin-prettier": "^2.3.1"
   },
   "proxy": "http://localhost:8080"
 }

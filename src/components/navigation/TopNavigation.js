@@ -25,7 +25,7 @@ class TopNavigation extends Component {
             <Dropdown.Menu>
               <Dropdown.Item onClick={() => logout()}><Icon name='sign out' />Logout</Dropdown.Item>
               <Dropdown.Item><Icon name='usd' />Credits: {credits}</Dropdown.Item>
-              <Dropdown.Item as={Link} to='/dashboard/add_credits'><Icon name='shopping basket' />Add
+              <Dropdown.Item as={Link} to='/dashboard/credits/add'><Icon name='shopping basket' />Add
                 Credits</Dropdown.Item>
               <Dropdown.Item as={Link} to={`/user/${user._id}`}><Icon name='settings' />Edit Profile</Dropdown.Item>
             </Dropdown.Menu>

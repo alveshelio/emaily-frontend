@@ -11,8 +11,9 @@ export const fetchCredits = credits => ({
   credits
 });
 
-export const addCredits = (token, amount, JWTToken) => dispatch => api.billing.handlePayment(token, amount, JWTToken)
-  .then(result => dispatch(updateCredits(result.credits)));
+export const addCredits = (token, amount, JWTToken) => dispatch =>
+  api.billing.handlePayment(token, amount, JWTToken)
+    .then(result => dispatch(updateCredits(result.credits)));
 
 export const getCreditsValue = JWTToken => dispatch =>
   api.billing.getCreditsFromUser(JWTToken)

@@ -8,10 +8,7 @@ import AddSurveyForm from '../forms/AddSurveyForm';
 import { createSurvey } from '../../actions/surveys';
 
 class AddSurveyPage extends Component {
-  submit = data => {
-    return this.props.createSurvey(data)
-      .then((res) => console.log('response in AddSurveyPage', res));
-  };
+  submit = data => this.props.createSurvey(data);
 
   render() {
     return (

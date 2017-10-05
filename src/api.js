@@ -7,10 +7,7 @@ axios.defaults.headers.common[ 'Authorization' ] = localStorage.getItem('bookwor
 export default {
   user: {
     login: credentials =>
-      axios.post('/api/auth', { credentials }).then(res => {
-        console.log('user /api/auth', res.data.user);
-        return res.data.user;
-      }),
+      axios.post('/api/auth', { credentials }).then(res => res.data.user),
     signup: user =>
       axios.post('/api/users', { user }).then(res => res.data.user),
     confirm: token =>

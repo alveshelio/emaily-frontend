@@ -19,7 +19,7 @@ class AddCreditsForm extends Component {
     e.target.value >= 5 ? stripeButtonDisabled = false : stripeButtonDisabled = true;
     return this.setState({
       ...this.state,
-      stripeButtonDisabled: stripeButtonDisabled,
+      stripeButtonDisabled,
       data: { ...this.state.data, [e.target.name]: parseInt(e.target.value, 10) }
     });
   };
@@ -68,7 +68,7 @@ class AddCreditsForm extends Component {
               </Form.Field>
             </Segment>
           </Form>
-          <Message><Payments disabled={this.state.stripeButtonDisabled} amount={parseInt(amount, 10)} /></Message>
+          <Message><Payments disabled={this.state.stripeButtonDisabled} amount={parseInt(amount * 100, 10)} /></Message>
         </Grid.Column>
       </Grid>
     );
