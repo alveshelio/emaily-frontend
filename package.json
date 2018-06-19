@@ -12,21 +12,24 @@
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.0.14",
+    "react-scripts": "1.1.1",
     "react-stripe-checkout": "^2.6.3",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.74.2",
-    "validator": "^9.0.0"
+    "validator": "^9.0.0",
+    "snyk": "^1.83.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.1",
@@ -35,5 +38,6 @@
     "eslint-config-prettier": "^2.6.0",
     "eslint-plugin-prettier": "^2.3.1"
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://localhost:8080",
+  "snyk": true
 }
